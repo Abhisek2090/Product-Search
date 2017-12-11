@@ -1,4 +1,4 @@
-package com.abhisek.indiezsearch;
+package com.abhisek.productsearch;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

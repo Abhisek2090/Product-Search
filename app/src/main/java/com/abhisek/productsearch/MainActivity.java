@@ -1,4 +1,4 @@
-package com.abhisek.indiezsearch;
+package com.abhisek.productsearch;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -23,6 +25,7 @@ import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private  Context mContext;
     ListView listView;
     DatabaseTable db;
@@ -36,10 +39,20 @@ public class MainActivity extends AppCompatActivity {
         mContext = this;
 
         final SearchView searchView = (SearchView)findViewById(R.id.searchWords);
+        searchView.setQueryHint("Enter first 2 letters of item");
         listView = (ListView) findViewById(R.id.listView);
 
         db = new DatabaseTable(mContext);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+              String item = (String) adapterView.getAdapter().getItem(i);
+              searchView.setQuery(item, false);
+              Log.i(TAG, item);
+            }
+        });
 
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -52,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
 
 
-                if(newText.length()>=3) {
+                if(newText.length()>=2) {
 
                     Cursor c = db.getWordMatches(newText, null);
                     if (c != null) {
@@ -67,9 +80,10 @@ public class MainActivity extends AppCompatActivity {
                                 i++;
                                 c.moveToNext();
 
-
                             }
                         }
+
+
 
                         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
                             @Override

@@ -1,4 +1,4 @@
-package com.abhisek.indiezsearch;
+package com.abhisek.productsearch;
 
 import android.app.Application;
 import android.util.Log;
